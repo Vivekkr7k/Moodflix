@@ -24,7 +24,8 @@ const Login = () => {
     try {
       const response = await axios.post(API_URLS.login, { email, password });
       console.log('Login successful:', response.data);
-      login(response.data.token); // Call login function with token
+      login(response.data.token); 
+      alert("loged In")// Call login function with token
       navigate('/admin'); 
     } catch (err) {
       setError('Invalid email or password');
