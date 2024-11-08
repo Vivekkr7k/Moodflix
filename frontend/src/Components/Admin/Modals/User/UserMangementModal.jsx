@@ -11,6 +11,7 @@ const UserManagementModal = ({ isOpen, onClose, onAdd, userData, onInputChange, 
   const handleSubmit = (e) => {
     e.preventDefault();
     onAdd(localData); // Call the onAdd function passed as a prop (either handleSubmit or handleUpdate)
+    alert("Date Saved")
   };
 
   if (!isOpen) return null; // Don't render the modal if it's closed

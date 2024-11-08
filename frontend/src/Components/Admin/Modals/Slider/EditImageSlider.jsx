@@ -61,6 +61,7 @@ const EditImageSlider = ({ isOpen, onClose, onUpdate, editingSlider }) => {
       const updatedSlider = await response.json();
       onUpdate(updatedSlider);
       onClose();
+      alert("Date Saved")
     } catch (error) {
       console.error("Error updating slider:", error);
     }

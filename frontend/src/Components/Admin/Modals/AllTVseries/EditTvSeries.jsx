@@ -44,6 +44,7 @@ const EditTvSeries = ({ series, onClose, onRefresh }) => {
       await axios.put(`${API_URLS.EditTvSeries}/${series._id}`, formData);
       onRefresh(); // Refresh the list after updating
       onClose(); // Close the modal after successful update
+      alert("Data Updated");
     } catch (error) {
       console.error('Error updating TV series:', error);
     }
@@ -232,17 +233,17 @@ const EditTvSeries = ({ series, onClose, onRefresh }) => {
             </div>
 
             <div className="mb-4">
-              <label htmlFor="releaseDate" className="block text-sm font-medium mb-1">Release Date</label>
-              <input
-                type="date"
-                id="releaseDate"
-                name="releaseDate"
-                value={formData.releaseDate.split('T')[0]} // Format for date input
-                onChange={handleChange}
-                className="border rounded px-2 py-1 w-full"
-                required
-              />
-            </div>
+  <label htmlFor="releaseDate" className="block text-sm font-medium mb-1">Release Date</label>
+  <input
+    type="date"
+    id="releaseDate"
+    name="releaseDate"
+    value={formData.releaseDate ? formData.releaseDate.split('T')[0] : ''} // Only split if value is not null
+    onChange={handleChange}
+    className="border rounded px-2 py-1 w-full"
+    required
+  />
+</div>
 
             <div className="mb-4">
               <label htmlFor="slug" className="block text-sm font-medium mb-1">Slug</label>

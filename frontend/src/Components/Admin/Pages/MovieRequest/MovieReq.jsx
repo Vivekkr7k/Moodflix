@@ -67,6 +67,7 @@ const MovieReq = () => {
       }
 
       setRequests(requests.filter((req) => req._id !== requestId));
+      alert("deleted successfully!");
     } catch (error) {
       console.error("Error deleting request:", error);
     }

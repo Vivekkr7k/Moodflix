@@ -52,6 +52,7 @@ const ProgramGuide = () => {
       const response = await fetch(`${API_URLS.programs}/${id}`, { method: 'DELETE' });
       if (response.ok) {
         setProgramList(programList.filter(program => program._id !== id));
+        alert("User deleted successfully!");
       }
     }
   };

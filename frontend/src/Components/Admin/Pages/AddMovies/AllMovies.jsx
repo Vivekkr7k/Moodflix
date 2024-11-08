@@ -12,6 +12,40 @@ const AllMovies = () => {
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
 
+   // States for stars, genres, and countries
+   const [stars, setStars] = useState([]);
+   const [genres, setGenres] = useState([]);
+   const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetching movies
+        const movieResponse = await axios.get(API_URLS.AddMovies);
+        setMovies(movieResponse.data);
+
+        // Fetching stars
+        const starsResponse = await axios.get(`${API_URLS.BASE_URL}/stars`);
+        setStars(starsResponse.data);
+
+        // Fetching genres
+        const genresResponse = await axios.get(`${API_URLS.BASE_URL}/genres`);
+        setGenres(genresResponse.data);
+
+        // Fetching countries
+        const countriesResponse = await axios.get(`${API_URLS.BASE_URL}/countries`);
+        setCountries(countriesResponse.data);
+        
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
   // Fetch movies from backend
   useEffect(() => {
     const fetchMovies = async () => {
@@ -55,7 +89,7 @@ const AllMovies = () => {
     try {
       await axios.delete(`${API_URLS.AddMovies}/${id}`); // Update this URL
       setMovies(movies.filter((movie) => movie._id !== id));
-      console.log("Deleted movie with id:", id);
+      alert("Date deleted")
     } catch (error) {
       console.error("Error deleting movie:", error);
     }

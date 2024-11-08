@@ -2,12 +2,15 @@ const express = require('express');
 const TvSeries = require('../../model/AllTvSeries/AllTvSeriesModel'); // Adjust the path to your TV Series model
 const router = express.Router();
 
-// Create a new TV Series
+// Create a new movie
 router.post('/', async (req, res) => {
   try {
-    const tvSeries = new TvSeries(req.body);
-    await tvSeries.save();
-    res.status(201).json(tvSeries);
+    const TVSeriesData = { ...req.body };
+    if (!TVSeriesData.tmdbId) delete TVSeriesData.tmdbId; // Remove tmdbId if it's empty
+
+    const movie = new TvSeries(TVSeriesData);
+    await movie.save();
+    res.status(201).json(movie);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

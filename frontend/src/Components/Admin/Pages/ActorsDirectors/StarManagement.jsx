@@ -64,7 +64,9 @@ const StarManagement = () => {
         throw new Error('Failed to save star');
       }
       setShowModal(false);
+      alert("Added Succsfully")
       fetchStars();
+
     } catch (error) {
       console.error('Error saving star:', error);
     }
@@ -102,6 +104,7 @@ const StarManagement = () => {
       });
       setStars(stars.filter(star => star._id !== id));
       console.log('Deleted star with id:', id);
+      alert("Deleted Succsfully")
     } catch (error) {
       console.error('Error deleting star:', error);
     }
@@ -185,6 +188,7 @@ const StarManagement = () => {
                 <select value={starType} onChange={(e) => setStarType(e.target.value)} className="w-full p-2 border mb-4 rounded">
                   <option value="Actor">Actor</option>
                   <option value="Director">Director</option>
+                  <option value="Writer">Writer</option>
                 </select>
 
                 <label>Star Name</label>

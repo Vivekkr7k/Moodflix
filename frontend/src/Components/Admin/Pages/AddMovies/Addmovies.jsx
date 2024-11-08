@@ -1,24 +1,25 @@
-import React, { useState , useEffect } from 'react';
-import { API_URLS } from '../../../../Apis/Globalapi';
+import React, { useState, useEffect } from "react";
+import { API_URLS } from "../../../../Apis/Globalapi";
 // import useMultiFetch from '../../../Utility/MultiFetch';
+import MovieForm from "../../../Utility/LocalData";
 
 const AddMovies = () => {
   const [movieData, setMovieData] = useState({
-    tmdbId: '',
-    title: '',
-    slug: '',
-    description: '',
-    actors: '',
-    directors: '',
-    writers: '',
-    imdbRating: '',
-    releaseDate: '',
-    countries: 'India',
-    genres: 'Action, Comedy',
-    runtime: '',
-    freePaid: 'Paid',
-    trailerUrl: '',
-    videoQuality: '4K',
+    tmdbId: "",
+    title: "",
+    slug: "",
+    description: "",
+    actors: "",
+    directors: "",
+    writers: "",
+    imdbRating: "", // Ensure imdbRating is initialized
+    releaseDate: "",
+    countries: "India",
+    genres: "Action, Comedy",
+    runtime: "",
+    freePaid: "Paid",
+    trailerUrl: "",
+    videoQuality: "4K",
     thumbnail: null,
     poster: null,
     sendNewsletter: false,
@@ -27,11 +28,20 @@ const AddMovies = () => {
     enableDownload: false,
   });
 
+  const [genresData, setGenresData] = useState([]); // State to hold genres data
+
+  useEffect(() => {
+    const storedGenresData = JSON.parse(
+      localStorage.getItem("genresData") || "[]"
+    );
+    setGenresData(storedGenresData); // Set genres data from localStorage
+  }, []);
+
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setMovieData({
       ...movieData,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -54,7 +64,7 @@ const AddMovies = () => {
 
   const handleFetch = () => {
     // Logic to fetch movie data from TMDB using tmdbId
-    console.log('Fetching movie data for TMDB ID:', movieData.tmdbId);
+    console.log("Fetching movie data for TMDB ID:", movieData.tmdbId);
   };
 
   const handleSubmit = async (event) => {
@@ -62,7 +72,6 @@ const AddMovies = () => {
 
     try {
       const {
-        tmdbId,
         title,
         slug,
         description,
@@ -85,9 +94,7 @@ const AddMovies = () => {
         poster,
       } = movieData;
 
-      // Prepare movie payload
       const moviePayload = {
-        tmdbId,
         title,
         slug,
         description,
@@ -108,45 +115,56 @@ const AddMovies = () => {
         enableDownload,
       };
 
-      // Convert thumbnail and poster to base64 if files are provided
-      if (thumbnail) {
-        moviePayload.thumbnail = await fileToBase64(thumbnail);
-      }
+      if (thumbnail) moviePayload.thumbnail = await fileToBase64(thumbnail);
+      if (poster) moviePayload.poster = await fileToBase64(poster);
 
-      if (poster) {
-        moviePayload.poster = await fileToBase64(poster);
-      }
-
-      // Make the POST request
       const response = await fetch(API_URLS.AddMovies, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(moviePayload),
       });
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
 
       const data = await response.json();
-      console.log('Movie added successfully:', data);
       alert("Movie added successfully");
-      window.location.reload();
-      
+
+      // Reset the form
+      setMovieData({
+        title: "",
+        slug: "",
+        description: "",
+        actors: "",
+        directors: "",
+        writers: "",
+        imdbRating: "",
+        releaseDate: "",
+        countries: "India",
+        genres: "",
+        runtime: "",
+        freePaid: "Paid",
+        trailerUrl: "",
+        videoQuality: "4K",
+        thumbnail: null,
+        poster: null,
+        sendNewsletter: false,
+        sendPushNotification: false,
+        publish: false,
+        enableDownload: false,
+      });
     } catch (error) {
-      console.error('Error adding movie:', error);
+      console.error("Error adding movie:", error);
     }
   };
-
 
   return (
     <div className="pt-20 p-6 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-semibold mb-6">Add Movie/Video</h2>
 
       <div className="flex justify-center mb-6 flex-col items-center">
-        <h1 className='bg-blue-500 text-white font-bold capitalize py-2 px-4 rounded-md mb-2'>IMPORT MOVIES/VIDEOS FROM TMDB</h1>
+        <h1 className="bg-blue-500 text-white font-bold capitalize py-2 px-4 rounded-md mb-2">
+          IMPORT MOVIES/VIDEOS FROM TMDB
+        </h1>
         <div>
           <input
             type="text"
@@ -172,7 +190,7 @@ const AddMovies = () => {
 
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium mb-1">Title</label>
+            <label className="block text-sm font-medium mb-1 ">Title</label>
             <input
               type="text"
               name="title"
@@ -184,19 +202,29 @@ const AddMovies = () => {
 
           {/* Slug */}
           <div>
-            <label className="block text-sm font-medium mb-1">Slug (https://admin.moodflix.com/watch/slug)</label>
-            <input
-              type="text"
+            <label className="block text-sm font-medium mb-1">
+              Slug (URL-friendly)
+            </label>
+            <select
               name="slug"
               value={movieData.slug}
               onChange={handleInputChange}
               className="w-full p-2 border rounded"
-            />
+            >
+              <option value="">Select Slug</option>
+              {genresData.map((slug) => (
+                <option key={slug._id} value={slug.slug}>
+                  {slug.slug}
+                </option>
+              ))}
+            </select>
           </div>
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium mb-1">Description</label>
+            <label className="block text-sm font-medium mb-1">
+              Description
+            </label>
             <textarea
               name="description"
               value={movieData.description}
@@ -207,7 +235,7 @@ const AddMovies = () => {
           </div>
 
           {/* Actors, Directors, Writers, IMDb Rating, Release Date, Countries, Genres, Runtime, Free/Paid, Trailer URL, Video Quality */}
-          {['Actors', 'Directors', 'Writers', 'IMDb Rating', 'Release Date', 'Countries', 'Genres', 'Runtime', 'Trailer URL'].map((field, index) => (
+          {/* {['Actors', 'Directors', 'Writers', 'IMDb Rating', 'Release Date', 'Runtime'].map((field, index) => (
             <div key={index}>
               <label className="block text-sm font-medium mb-1">{field}</label>
               <input
@@ -218,8 +246,38 @@ const AddMovies = () => {
                 className="w-full p-2 border rounded"
               />
             </div>
-          ))}
-          
+          ))} */}
+
+          {/* Trailer URL */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              Trailer URL
+            </label>
+            <input
+              type="text"
+              name="trailerUrl"
+              value={movieData.trailerUrl}
+              onChange={handleInputChange}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+
+          {/* IMDb Rating */}
+          {/* <div>
+  <label className="block text-sm font-medium mb-1">IMDb Rating</label>
+  <input
+    type="number"
+    name="imdbRating"
+    value={movieData.imdbRating}
+    onChange={handleInputChange}
+    className="w-full p-2 border rounded"
+    min="0"
+    max="10"
+    step="0.1"
+    placeholder="Enter IMDb Rating (0 - 10)"
+  />
+</div> */}
+
           {/* Free/Paid */}
           <div>
             <label className="block text-sm font-medium mb-1">Free/Paid</label>
@@ -234,22 +292,15 @@ const AddMovies = () => {
             </select>
           </div>
 
-          {/* Video Quality */}
-          <div>
-            <label className="block text-sm font-medium mb-1">Video Quality</label>
-            <select
-              name="videoQuality"
-              value={movieData.videoQuality}
-              onChange={handleInputChange}
-              className="w-full p-2 border rounded"
-            >
-              <option value="4K">4K</option>
-              <option value="1080p">1080p</option>
-              <option value="720p">720p</option>
-            </select>
-          </div>
-        </div>
 
+          
+          <MovieForm
+            movieData={movieData}
+            handleInputChange={handleInputChange}
+          />
+          
+        </div>
+       
         {/* Upload Section */}
         <div className="bg-white flex-1 p-4 space-y-4">
           <h3 className="text-lg font-semibold">Upload</h3>
@@ -278,39 +329,41 @@ const AddMovies = () => {
             />
           </div>
           <div className="p-6 shadow-md rounded mt-4">
-        <h3 className="text-lg font-semibold">Notification Settings</h3>
-        <div className="flex flex-col space-y-4">
-          {/* Checkbox fields for notifications */}
-          {['Send Newsletter', 'Send Push Notification', 'Publish', 'Enable Download'].map((label, index) => (
-            <div key={index}>
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  name={label.toLowerCase().replace(' ', '')}
-                  checked={movieData[label.toLowerCase().replace(' ', '')]}
-                  onChange={handleInputChange}
-                  className="mr-2"
-                />
-                {label}
-              </label>
+            <h3 className="text-lg font-semibold">Notification Settings</h3>
+            <div className="flex flex-col space-y-4">
+              {/* Checkbox fields for notifications */}
+              {[
+                "Send Newsletter",
+                "Send Push Notification",
+                "Publish",
+                "Enable Download",
+              ].map((label, index) => (
+                <div key={index}>
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name={label.toLowerCase().replace(" ", "")}
+                      checked={movieData[label.toLowerCase().replace(" ", "")]}
+                      onChange={handleInputChange}
+                      className="mr-2"
+                    />
+                    {label}
+                  </label>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-       {/* Submit Button */}
-       <button
-        onClick={handleSubmit}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-      >
-        Add Movie/Video
-      </button>
+          </div>
+          {/* Submit Button */}
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+          >
+            Add Movie/Video
+          </button>
         </div>
       </div>
 
       {/* Notification Settings */}
-     
-
-     
     </div>
   );
 };

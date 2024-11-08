@@ -85,6 +85,7 @@ const GenreManagement = () => {
         }
 
         setGenres(genres.filter((genre) => genre._id !== genreId));
+        alert("deleted successfully!");
       } catch (error) {
         console.error("Error deleting genre:", error);
       }

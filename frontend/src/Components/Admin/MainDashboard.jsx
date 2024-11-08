@@ -16,47 +16,63 @@ const formatDate = (dateString) => {
 const MainDashboard = () => {
   const [moviesCount, setMoviesCount] = useState(0);
   const [tvSeriesCount, setTvSeriesCount] = useState(0);
-  const [liveTvCount, setLiveTvCount] = useState(0);
+  const [liveTvCount, setLiveTvCount] = useState(0); // Assuming you'll implement live TV data later
   const [starsCount, setStarsCount] = useState(0);
   const [countriesCount, setCountriesCount] = useState(0);
   const [genresCount, setGenresCount] = useState(0);
   const [mostPopularMovies, setMostPopularMovies] = useState([]);
   const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [recentSubscribers, setRecentSubscribers] = useState([]);
+  const [videoQualities, setVideoQualities] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const moviesResponse = await api.get('/movies');
-        setMoviesCount(moviesResponse.data.length);
+        const moviesCount = moviesResponse.data.length;
+        setMoviesCount(moviesCount);
+        localStorage.setItem('moviesCount', moviesCount);
+        localStorage.setItem('moviesData', JSON.stringify(moviesResponse.data)); // Save full data
       } catch (error) {
         console.error('Error fetching movies count:', error);
       }
 
       try {
         const tvSeriesResponse = await api.get('/tvseries');
-        setTvSeriesCount(tvSeriesResponse.data.length);
+        const tvSeriesCount = tvSeriesResponse.data.length;
+        setTvSeriesCount(tvSeriesCount);
+        localStorage.setItem('tvSeriesCount', tvSeriesCount);
+        localStorage.setItem('tvSeriesData', JSON.stringify(tvSeriesResponse.data)); // Save full data
       } catch (error) {
         console.error('Error fetching TV series count:', error);
       }
 
       try {
         const starsResponse = await api.get('/stars');
-        setStarsCount(starsResponse.data.length);
+        const starsCount = starsResponse.data.length;
+        setStarsCount(starsCount);
+        localStorage.setItem('starsCount', starsCount);
+        localStorage.setItem('starsData', JSON.stringify(starsResponse.data)); // Save full data
       } catch (error) {
         console.error('Error fetching stars count:', error);
       }
 
       try {
         const countriesResponse = await api.get('/countries');
-        setCountriesCount(countriesResponse.data.length);
+        const countriesCount = countriesResponse.data.length;
+        setCountriesCount(countriesCount);
+        localStorage.setItem('countriesCount', countriesCount);
+        localStorage.setItem('countriesData', JSON.stringify(countriesResponse.data)); // Save full data
       } catch (error) {
         console.error('Error fetching countries count:', error);
       }
 
       try {
         const genresResponse = await api.get('/genres');
-        setGenresCount(genresResponse.data.length);
+        const genresCount = genresResponse.data.length;
+        setGenresCount(genresCount);
+        localStorage.setItem('genresCount', genresCount);
+        localStorage.setItem('genresData', JSON.stringify(genresResponse.data)); // Save full data
       } catch (error) {
         console.error('Error fetching genres count:', error);
       }
@@ -64,7 +80,9 @@ const MainDashboard = () => {
       // Fetch Most Popular Movies
       try {
         const popularMoviesResponse = await api.get('/popularMovies');
-        setMostPopularMovies(popularMoviesResponse.data);
+        const mostPopularMovies = popularMoviesResponse.data;
+        setMostPopularMovies(mostPopularMovies);
+        localStorage.setItem('mostPopularMovies', JSON.stringify(mostPopularMovies));
       } catch (error) {
         console.error('Error fetching most popular movies:', error);
       }
@@ -72,22 +90,27 @@ const MainDashboard = () => {
       // Fetch Top Rated Movies
       try {
         const topRatedMoviesResponse = await api.get('/topRatedMovies');
-        setTopRatedMovies(topRatedMoviesResponse.data);
+        const topRatedMovies = topRatedMoviesResponse.data;
+        setTopRatedMovies(topRatedMovies);
+        localStorage.setItem('topRatedMovies', JSON.stringify(topRatedMovies));
       } catch (error) {
         console.error('Error fetching top rated movies:', error);
       }
 
-      // Fetch Recent Subscribers
-      try {
-        const subscribersResponse = await api.get('/subscribers');
-        setRecentSubscribers(subscribersResponse.data);
-      } catch (error) {
-        console.error('Error fetching recent subscribers:', error);
-      }
-    };
+    // Fetch Video Qualities
+    try {
+      const videoQualitiesResponse = await api.get('/videoQualities');
+      const videoQualities = videoQualitiesResponse.data;
+      setVideoQualities(videoQualities);
+      localStorage.setItem('videoQualities', JSON.stringify(videoQualities)); // Save full data
+    } catch (error) {
+      console.error('Error fetching video qualities:', error);
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, []); //
+
 
   return (
     <div className="pt-20 p-6 bg-gray-100 min-h-screen">

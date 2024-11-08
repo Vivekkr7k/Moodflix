@@ -67,6 +67,7 @@ const Reports = () => {
       }
 
       setReports(reports.filter((report) => report._id !== reportId));
+      alert("deleted successfully!");
     } catch (error) {
       console.error("Error deleting report:", error);
     }

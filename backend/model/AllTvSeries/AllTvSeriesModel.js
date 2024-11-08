@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const TvSeriesSchema = new mongoose.Schema({
-  tmdbId: { type: String, unique: true },
+  tmdbId: { type: String },
   title: { type: String, required: true },
-  slug: { type: String, required: true, unique: true },
+  slug: { type: String, required: true }, // Removed `unique: true`
   description: { type: String },
   actors: { type: String },
   directors: { type: String },
@@ -15,9 +15,10 @@ const TvSeriesSchema = new mongoose.Schema({
   runtime: { type: String },
   freePaid: { type: String, enum: ['Free', 'Paid'], default: 'Paid' },
   trailerUrl: { type: String },
+  imdbRating: { type: String }, 
   videoQuality: { type: String, default: '4K' },
-  thumbnail: { type: String }, // Store the base64 image URL
-  poster: { type: String }, // Store the base64 image URL
+  thumbnail: { type: String },
+  poster: { type: String },
   sendNewsletter: { type: Boolean, default: false },
   sendPushNotification: { type: Boolean, default: false },
   publish: { type: Boolean, default: false },

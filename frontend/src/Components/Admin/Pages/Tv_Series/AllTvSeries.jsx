@@ -58,6 +58,7 @@ const AllTvSeries = () => {
       await axios.delete( `${API_URLS.AllTvSeries}/${id}`);
       setTvSeries(tvSeries.filter(series => series._id !== id));
       setFilteredTvSeries(filteredTvSeries.filter(series => series._id !== id));
+      alert("User deleted successfully!");
     } catch (error) {
       console.error('Error deleting series:', error);
     }

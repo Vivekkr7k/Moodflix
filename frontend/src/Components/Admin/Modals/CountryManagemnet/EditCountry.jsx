@@ -30,7 +30,7 @@ const EditCountry = ({ isOpen, onClose, country, onSave }) => {
       const response = await axios.put(`${API_URLS.country}/${country._id}`, updatedCountry);
       onSave(response.data); // Pass the updated country data back to the parent
       onClose();
-      alert("Updated")
+      alert("Data Updated");
     } catch (error) {
       console.error('Error updating country:', error);
       alert('Failed to update country. Please try again.'); // Add user feedback for errors

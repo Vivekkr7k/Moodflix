@@ -97,6 +97,7 @@ const MovieVideoQuality = () => {
         }
 
         setVideoQualities(videoQualities.filter((quality) => quality._id !== qualityId));
+        alert("deleted successfully!");
       } catch (error) {
         console.error("Error deleting video quality:", error);
       }

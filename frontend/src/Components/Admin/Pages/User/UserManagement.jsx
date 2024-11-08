@@ -46,6 +46,7 @@ const UserManagement = () => {
       const savedUser = await response.json();
       setUserList([...userList, savedUser]);
       setModalOpen(false);
+      alert("Date Saved")
     } else {
       console.error('Failed to add user');
     }
@@ -92,6 +93,7 @@ const UserManagement = () => {
 
     if (response.ok) {
       setUserList(userList.filter(user => user._id !== userId));
+      alert("User deleted successfully!");
     } else {
       console.error('Failed to delete user');
     }

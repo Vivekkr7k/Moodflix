@@ -57,6 +57,7 @@ const EditGenre = ({ isOpen, onClose, onUpdate, editingGenre }) => {
     }
 
     onClose();
+    alert("Data Updated");
   };
 
   if (!isOpen) return null;

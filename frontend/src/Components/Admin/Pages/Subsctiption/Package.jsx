@@ -62,6 +62,7 @@ const Package = () => {
         }
 
         setPackages(packages.filter((pkg) => pkg._id !== packageId));
+        alert("deleted successfully!");
       } catch (error) {
         console.error("Error deleting package:", error);
       }

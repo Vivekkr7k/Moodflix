@@ -46,6 +46,7 @@ const SearchAndImport = () => {
         if (!response.ok) throw new Error("Failed to delete");
 
         setMovies(movies.filter((movie) => movie._id !== movieId));
+        alert("deleted successfully!");
       } catch (error) {
         console.error("Error deleting item:", error);
       }

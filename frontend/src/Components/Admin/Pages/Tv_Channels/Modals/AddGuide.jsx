@@ -27,6 +27,7 @@ const AddGuide = ({ closeModal }) => {
 
     if (response.ok) {
       closeModal();
+      alert("Date Saved")
     } else {
       console.error('Failed to add program guide');
     }

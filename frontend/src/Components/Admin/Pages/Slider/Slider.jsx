@@ -84,6 +84,7 @@ const ImageSliderManagement = () => {
       }
 
       setSliders(sliders.filter((slider) => slider._id !== sliderId));
+      alert("deleted successfully!");
     } catch (error) {
       console.error("Error deleting slider:", error);
     }

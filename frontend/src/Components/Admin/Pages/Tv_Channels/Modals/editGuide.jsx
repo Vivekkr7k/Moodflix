@@ -32,6 +32,7 @@ const EditGuide = ({ program, closeModal, fetchPrograms }) => {
       if (response.ok) {
         fetchPrograms();
         closeModal();
+        alert("Date Saved")
       } else {
         alert('Failed to update the program. Please try again later.');
       }

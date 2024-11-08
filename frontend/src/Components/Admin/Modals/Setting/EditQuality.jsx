@@ -15,6 +15,7 @@ const EditQualityModal = ({ isOpen, onClose, onUpdate, editingQuality }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     onUpdate({ ...editingQuality, quality, description });
+    alert("Data Updated");
   };
 
   if (!isOpen) return null;

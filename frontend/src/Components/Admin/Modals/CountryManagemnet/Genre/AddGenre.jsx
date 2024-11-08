@@ -40,6 +40,7 @@ const AddGenre = ({ isOpen, onClose, onAdd }) => {
             const newGenre = await response.json();
             onAdd(newGenre); // Pass new genre to the parent
             onClose(); // Close the modal after successful addition
+            alert("Date Saved")
           } else {
             const errorData = await response.json();
             console.error('Error:', errorData.message);

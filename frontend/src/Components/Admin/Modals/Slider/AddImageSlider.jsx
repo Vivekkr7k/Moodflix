@@ -54,6 +54,7 @@ const AddImageSlider = ({ isOpen, onClose, onAdd }) => {
       const newSlider = await response.json();
       onAdd(newSlider);
       onClose();
+      alert("Date Saved")
     } catch (error) {
       console.error("Error adding slider:", error);
     }

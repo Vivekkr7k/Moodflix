@@ -59,6 +59,7 @@ const CountryManagement = () => {
         });
         // Update the countries list after deletion
         setCountries(countries.filter(country => country._id !== countryId));
+        alert("deleted successfully!");
       } catch (error) {
         console.error('Error deleting country:', error);
       }

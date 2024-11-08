@@ -5,7 +5,10 @@ const router = express.Router();
 // Create a new movie
 router.post('/', async (req, res) => {
   try {
-    const movie = new Movie(req.body);
+    const movieData = { ...req.body };
+    if (!movieData.tmdbId) delete movieData.tmdbId; // Remove tmdbId if it's empty
+
+    const movie = new Movie(movieData);
     await movie.save();
     res.status(201).json(movie);
   } catch (error) {

@@ -66,6 +66,7 @@ const AddPackageModal = ({ isOpen, onClose, onAdd, onEdit, editingPackage }) => 
       }
 
       onClose(); // Close the modal after successful addition or edit
+      alert("Date Saved")
     } catch (error) {
       console.error('Error:', error);
       alert('Failed to save package: ' + error.message);
